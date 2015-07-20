@@ -7,11 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<%= render :partial => './layouts/navbar' %>
 
+ <p class="notice"><%= notice %></p>
+ <p class="alert"><%= alert %></p>
+	   
 <%= yield %>
 
-<div class="col-lg-3">
-	<h1>test</h1>
-</div>
 </body>
 </html>

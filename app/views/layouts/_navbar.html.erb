@@ -1,0 +1,18 @@
+<div id="menu" class="navbar navbar-default navbar-fixed-top">
+	<div class="navbar-header">
+		<button type="button" class="btn-info navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="glyphicon glyphicon-th-list"></span>
+		</button>
+		<div class="navbar-brand">
+			<a href="." style="text-decoration:none"><h3 style="color:#8ACDCD">Budget Knight</h3></a>
+		</div>
+	</div>
+	
+	<div class="collapse navbar-collapse">
+		<% if current_user %>
+			<ul class="nav navbar-nav navbar-right">
+				<li class="nav"><%= link_to('Sign Out', destroy_user_session_path, :method => :delete) %></li>
+			</ul>
+		<% end %>
+	</div>
+</div>
