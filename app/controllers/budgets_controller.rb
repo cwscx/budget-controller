@@ -15,7 +15,7 @@ class BudgetsController < ApplicationController
     # create a new budget plan with the enetered amount and end time
     else
       @budget = Budget.create(amount: params[:budget][:amount], user_id: current_user.id)
-    
+      
       # Set the end time as one month later
       @end_time = @budget.created_at
       if(@end_time.month == 12)

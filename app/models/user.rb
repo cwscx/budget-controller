@@ -9,10 +9,11 @@ class User < ActiveRecord::Base
   
   def hasConsumptions?
     if(self.hasBudget?)
-      time = @budget.created_at
-      @consumptions = consumptions.where("created_at >= ?", time)
+      start_time = @budget.created_at
+      end_time = @budget.end_time
+      @consumptions = consumptions.where("created_at >= ? AND created_at <= ?", start_time, end_time)
 
-      if(@consumptions.nil?)
+      if(@consumptions.nil? || @consumptions.length == 0)
         false
       else
         @consumptions
@@ -26,11 +27,27 @@ class User < ActiveRecord::Base
     # Get the latest budget plan
     @budget = budgets.order('end_time').last
 
-    # If the there's no budget plan setted or the latest budget plan is not in use
-    # Return false to indicate that here's no valid budget plan currently
-    if(@budget.nil? || @budget.end_time.nil? || !@budget.end_time.future?)
+    # If the there's no budget plan setted, return false to indicate that here's no budget plan.
+    # Usually it's the case when the user first login
+    if(@budget.nil? || @budget.end_time.nil?)
       false
     else
+      # If the user's current budget plan is invalid, create a new plan for the user automatically
+      if(!@budget.end_time.future?)
+        @budget = Budget.create(user_id: @budget.user_id, amount: @budget.amount)
+        
+        # Set the end time as one month later
+        @end_time = @budget.created_at
+        if(@end_time.month == 12)
+          @end_time = @end_time.change(year: @end_time.year + 1, month: 0)
+        else
+          @end_time = @end_time.change(month: @end_time.month + 1)
+        end
+    
+        @budget.end_time = @end_time
+        @budget.save
+      end
+      
       @budget
     end
   end
@@ -48,10 +65,10 @@ class User < ActiveRecord::Base
       @remaining
     # If there's invalid consumptions but valid budget, direct to new consumption page
     elsif(self.hasBudget?)
-      redirect_to new_consumption_url(self.id)
+      @budget.amount
     # If nothing's valid, redirect to new budget page
     else
-      redirect_to new_budget.url(self.id)
+      redirect_to :root
     end
   end
 end
