@@ -1,5 +1,6 @@
 class BudgetsController < ApplicationController
   
+  before_action :set_budget, :only => [:edit, :update]
   def index
   end
   
@@ -31,6 +32,25 @@ class BudgetsController < ApplicationController
   end
   
   def edit
+  end
+  
+  def update
+    if(budget_params[:amount].to_f >= 0)
+      @budget.update(budget_params)
+    end
     
+    redirect_to :root
+  end
+  
+  private 
+
+  # get amount
+  def budget_params
+    params.require(:budget).permit(:amount)
+  end
+  
+  # Return the user's latest valid budget plan
+  def set_budget
+    @budget = current_user.hasBudget?
   end
 end

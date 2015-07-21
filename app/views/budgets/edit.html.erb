@@ -1,0 +1,6 @@
+<br/>
+<%= form_for @budget, :url => budget_path(@budget), :method => :patch do |f| %>
+	<%= render :partial => "./budgets/amount", :locals => {:f => f} %>
+	
+	<%= f.submit "Update", :class => 'btn btn-info' %>
+<% end %>

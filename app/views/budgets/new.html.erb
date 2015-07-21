@@ -1,7 +1,6 @@
 <br/>
 <%= form_for @budget do |f| %>
-	<%= f.label :amount %>
-	<%= f.number_field :amount %> $
+	<%= render :partial => "./budgets/amount", :locals => {:f => f} %>
 	
 	<%= f.submit "Submit", :class => 'btn btn-info' %>
 <% end %>
