@@ -8,11 +8,17 @@ class User < ActiveRecord::Base
   has_many  :budgets
   
   def hasConsumptions?
-    @all_consumptions = consumptions.find_by_user_id(self.id)
-    if(@all_consumptions.nil?)
-      false
+    if(self.hasBudget?)
+      time = @budget.created_at
+      @consumptions = consumptions.where("created_at >= ?", time)
+
+      if(@consumptions.nil?)
+        false
+      else
+        @consumptions
+      end
     else
-      @all_consumptions
+      false
     end
   end
   
@@ -29,4 +35,23 @@ class User < ActiveRecord::Base
     end
   end
   
+  # Calcualte the remaining Budget
+  def remaining_budget
+    # If there're valid consumptions and budget, calculating the remaining budget
+    if(self.hasConsumptions?)
+      @remaining = @budget.amount
+      
+      @consumptions.each do |c|
+        @remaining -= c.price
+      end
+      
+      @remaining
+    # If there's invalid consumptions but valid budget, direct to new consumption page
+    elsif(self.hasBudget?)
+      redirect_to new_consumption_url(self.id)
+    # If nothing's valid, redirect to new budget page
+    else
+      redirect_to new_budget.url(self.id)
+    end
+  end
 end

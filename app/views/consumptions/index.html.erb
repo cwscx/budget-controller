@@ -1,11 +1,24 @@
 <br/>
 <% if current_user.hasBudget? %>
-	<%= "Amount: #{current_user.hasBudget?.amount}" %>
+	<%= "Budget remaining: $ #{current_user.remaining_budget}" %>
 	<%= link_to 'Edit', edit_budget_path(current_user)%>
 	
+	<br/>
 	<% if current_user.hasConsumptions? %>
-	
+	<ul>
+		<% @consumptions.each do |c| %>
+		<li>
+			<%= "I spent $ #{c.price} on #{c.name}" %>
+			<%= link_to 'Edit', edit_consumption_path(c) %>
+			<%= link_to 'Delete', consumption_path(c), :method => :delete %>
+		</li>
+		<% end %>
+	</ul>
+	<% else %>
+		<h3>Didn't spend any money this month?</h3>
 	<% end %>
+	<%= link_to 'New bids', new_consumption_path(current_user) %>
 <% else %>
+	<h3>Design your budget plan for this month!</h3>
 	<%= link_to 'New Budget', new_budget_path(current_user) %>
 <% end %>

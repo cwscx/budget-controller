@@ -1,0 +1,8 @@
+<br/>
+<%= form_for current_user.hasConsumptions?.find(params[:id]), 
+	:url => consumption_path(current_user.hasConsumptions?.find(params[:id])), :method => :patch do |f| %>
+	<%= render :partial => "./consumptions/form", :locals => {:f => f} %>
+	
+	<%= f.submit "Update", :class => 'btn btn-info' %>
+	<%= link_to 'Back', :root, :style => 'padding-left:80px' %>
+<% end %>
