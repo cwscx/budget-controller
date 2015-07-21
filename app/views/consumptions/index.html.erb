@@ -1,13 +1,12 @@
-<br/>
 <% if @budget = current_user.hasBudget? %>
-	<%= "Budget remaining: $ #{current_user.remaining_budget}  
+	<h3>
+		<%= "Budget remaining: $ #{current_user.remaining_budget}  
 		 From #{@budget.created_at.year}-#{@budget.created_at.month}-#{@budget.created_at.day}  
 		 To #{@budget.end_time.year}-#{@budget.end_time.month}-#{@budget.end_time.day}" %>
-	<%= link_to 'Edit', edit_budget_path(current_user)%>
-	
-	<br/>
+		 <span style="font-size:65%"><%= link_to 'Edit', edit_budget_path(current_user)%></span>
+	</h3>
+
 	<% if current_user.hasConsumptions? %>
-	<br/>
 	<ul>
 		<% @consumptions.each do |c| %>
 		<li>
@@ -16,11 +15,14 @@
 			<%= link_to 'Delete', consumption_path(c), :method => :delete %>
 		</li>
 		<% end %>
+		<li><%= link_to 'Add New Bids', new_consumption_path(current_user) %></li>
 	</ul>
 	<% else %>
 		<h3>Didn't spend any money this month?</h3>
+		<ul>
+			<li><%= link_to 'Add New Bids', new_consumption_path(current_user) %></li>
+		</ul>
 	<% end %>
-	<%= link_to 'New bids', new_consumption_path(current_user) %>
 <% else %>
 	<h3>Design your budget plan for this month!</h3>
 	<%= link_to 'New Budget', new_budget_path(current_user) %>

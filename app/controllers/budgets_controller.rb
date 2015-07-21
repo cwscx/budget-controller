@@ -9,9 +9,10 @@ class BudgetsController < ApplicationController
   end
   
   def create
-    # If the current user's budget plan is still valid, return the budget
+    # If the current user's has or used to have a budget, return the budget. Outdated budget will be updated automatically
     if @budget = current_user.hasBudget?
       @budget
+      flash[:notice] = "Budget already exists"
     # create a new budget plan with the enetered amount and end time
     else
       @budget = Budget.create(amount: params[:budget][:amount], user_id: current_user.id)
@@ -26,6 +27,8 @@ class BudgetsController < ApplicationController
     
       @budget.end_time = @end_time
       @budget.save
+      
+      flash[:notice] = "New budget is already managed"
     end
     
     redirect_to :root
@@ -37,9 +40,13 @@ class BudgetsController < ApplicationController
   def update
     if(budget_params[:amount].to_f >= 0)
       @budget.update(budget_params)
+      
+      flash[:notice] = "The budget is updated!"
+      redirect_to :root
+    else
+      flash[:alert] = 'The new budget should be positive'
+      render :action => :edit
     end
-    
-    redirect_to :root
   end
   
   private 

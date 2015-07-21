@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
     if(self.hasBudget?)
       start_time = @budget.created_at
       end_time = @budget.end_time
+      puts start_time
+      puts end_time
       @consumptions = consumptions.where("created_at >= ? AND created_at <= ?", start_time, end_time)
 
       if(@consumptions.nil? || @consumptions.length == 0)
@@ -66,9 +68,6 @@ class User < ActiveRecord::Base
     # If there's invalid consumptions but valid budget, direct to new consumption page
     elsif(self.hasBudget?)
       @budget.amount
-    # If nothing's valid, redirect to new budget page
-    else
-      redirect_to :root
     end
   end
 end
