@@ -1,0 +1,7 @@
+<br/>
+<%= form_for @budget do |f| %>
+	<%= f.label :amount %>
+	<%= f.number_field :amount %> $
+	
+	<%= f.submit "Submit", :class => 'btn btn-info' %>
+<% end %>

@@ -1,5 +1,6 @@
-<% if current_user.hasConsumptions? %>
-
+<% if current_user.hasBudget? %>
+	<%= "Amount: #{current_user.hasBudget?.amount}" %>
+	<%= link_to 'Edit', edit_budget_path(current_user)%>
 <% else %>
-	
+	<%= link_to 'New Budget', new_budget_path(current_user) %>
 <% end %>

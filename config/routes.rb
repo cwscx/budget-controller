@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
   
   resources :consumptions
+  resources :budgets
+  
   root to: 'consumptions#index'
   
   # The priority is based upon order of creation: first created -> highest priority.
