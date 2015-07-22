@@ -2,14 +2,17 @@ class ConsumptionsController < ApplicationController
   before_filter:authenticate_user!
   
   before_action :set_consumptions, :only => [:index, :edit, :update, :destroy]
+  before_action :set_budgets, :only => [:index]
   
   def index
-    @remaining = current_user.remaining_budget
+    if(current_user.hasConsumptions?)
+      @remaining = current_user.remaining_budget
 
-    if(@remaining == 0)
-      flash[:notice] = "You have no budget right now!"
-    elsif(@remaining < 0)
-      flash[:alert] = "You budget is less than zero!"
+      if(@remaining == 0)
+        flash[:notice] = "You have no budget right now!"
+      elsif(@remaining < 0)
+        flash[:alert] = "You budget is less than zero!"
+      end
     end
   end
   
@@ -71,6 +74,10 @@ class ConsumptionsController < ApplicationController
   
   def set_consumptions
     @consumptions = current_user.hasConsumptions?
+  end
+  
+  def set_budgets
+    @budgets = current_user.budgets.order('end_time DESC')
   end
   
   def consumption_params

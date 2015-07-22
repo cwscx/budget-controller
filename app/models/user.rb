@@ -11,8 +11,7 @@ class User < ActiveRecord::Base
     if(self.hasBudget?)
       start_time = @budget.created_at
       end_time = @budget.end_time
-      puts start_time
-      puts end_time
+
       @consumptions = consumptions.where("created_at >= ? AND created_at <= ?", start_time, end_time)
 
       if(@consumptions.nil? || @consumptions.length == 0)

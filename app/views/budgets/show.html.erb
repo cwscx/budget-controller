@@ -1,0 +1,27 @@
+<div>
+	<h3><%= "Budget From #{@budget.created_at.year}-#{@budget.created_at.month}-#{@budget.created_at.day} To
+		#{@budget.end_time.year}-#{@budget.end_time.month}-#{@budget.end_time.day}"%>
+	</h3>
+	
+	<ul>
+		<% @consumptions.each do |c| %>
+			<li><p><%= "I spent $ #{c.price} on #{c.name} on #{c.created_at.year}-#{c.created_at.month}-#{c.created_at.day}"%></p>
+			</li>
+		<% end %>
+	</ul>
+	<h3><%= "Budget remaining $ #{@remaining}"%></h3>
+	
+	<% if @remaining > 0.25 * @budget.amount %>
+		<p>You have great decent control! But try to spend more money </p>
+	<% elsif @remaining > 0.1 * @budget.amount %>
+		<p>You have decent budget control!</p>
+	<% elsif @remaining > 0.01 * @budget.amount %>
+		<p>You are just in your budget!</p>
+	<% elsif @remaining == 0 %>
+		<p>You spend all your budget!</p>
+	<% else %>
+		<p>You need to have better control!</p>
+	<% end %>
+	
+	<%= link_to "Back", :root %>
+</div>

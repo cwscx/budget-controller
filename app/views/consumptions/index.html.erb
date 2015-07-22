@@ -1,28 +1,40 @@
 <% if @budget = current_user.hasBudget? %>
-	<h3>
-		<%= "Budget remaining: $ #{current_user.remaining_budget}  
-		 From #{@budget.created_at.year}-#{@budget.created_at.month}-#{@budget.created_at.day}  
-		 To #{@budget.end_time.year}-#{@budget.end_time.month}-#{@budget.end_time.day}" %>
-		 <span style="font-size:65%"><%= link_to 'Edit', edit_budget_path(current_user)%></span>
-	</h3>
+	<div class="col-lg-8 col-md-8">
+		<h3>
+			<%= "Budget remaining: $ #{current_user.remaining_budget}  
+		 	From #{@budget.created_at.year}-#{@budget.created_at.month}-#{@budget.created_at.day}  
+		 	To #{@budget.end_time.year}-#{@budget.end_time.month}-#{@budget.end_time.day}" %>
+			 <span style="font-size:65%"><%= link_to 'Edit', edit_budget_path(current_user)%></span>
+		</h3>
 
-	<% if current_user.hasConsumptions? %>
-	<ul>
-		<% @consumptions.each do |c| %>
-		<li>
-			<%= "I spent $ #{c.price} on #{c.name}" %>
-			<%= link_to 'Edit', edit_consumption_path(c) %>
-			<%= link_to 'Delete', consumption_path(c), :method => :delete %>
-		</li>
-		<% end %>
-		<li><%= link_to 'Add New Bids', new_consumption_path(current_user) %></li>
-	</ul>
-	<% else %>
-		<h3>Didn't spend any money this month?</h3>
+		<% if current_user.hasConsumptions? %>
 		<ul>
+			<% @consumptions.each do |c| %>
+			<li>
+				<%= "I spent $ #{c.price} on #{c.name}" %>
+				<%= link_to 'Edit', edit_consumption_path(c) %>
+				<%= link_to 'Delete', consumption_path(c), :method => :delete %>
+			</li>
+			<% end %>
 			<li><%= link_to 'Add New Bids', new_consumption_path(current_user) %></li>
 		</ul>
-	<% end %>
+		<% else %>
+			<h3>Didn't spend any money this month?</h3>
+			<ul>
+				<li><%= link_to 'Add New Bids', new_consumption_path(current_user) %></li>
+			</ul>
+		<% end %>
+	</div>
+	
+	<div class="col-lg-4 col-md-4">
+		<h3>Budget Records</h3>
+		<ul>
+			<% @budgets.each do |b| %>
+				<li><%= link_to "#{b.created_at.year}-#{b.created_at.month}-#{b.created_at.day} To
+					#{b.end_time.year}-#{b.end_time.month}-#{b.end_time.day}", budget_path(b) %></li>
+			<% end %>
+		</ul>
+	</div>
 <% else %>
 	<h3>Design your budget plan for this month!</h3>
 	<%= link_to 'New Budget', new_budget_path(current_user) %>

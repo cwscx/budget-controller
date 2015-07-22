@@ -34,6 +34,19 @@ class BudgetsController < ApplicationController
     redirect_to :root
   end
   
+  def show
+    @budget = Budget.find(params[:id])
+    start_time = @budget.created_at
+    end_time = @budget.end_time
+
+    @consumptions = current_user.consumptions.where("created_at >= ? AND created_at <= ?", start_time, end_time)
+    
+    @remaining = @budget.amount
+    @consumptions.each do |c|
+      @remaining -= c.price
+    end
+  end
+  
   def edit
   end
   
