@@ -9,7 +9,10 @@
 			</li>
 		<% end %>
 	</ul>
-	<h3><%= "Budget remaining $ #{@remaining}"%></h3>
+	<h3><%= "Budget remaining $ #{@remaining}." %> </h3>
+	<h4><%= "You spent #{((1 - @remaining / @budget.amount) * 100).to_i}% of your budget "%></h4>
+	
+	<br/>
 	
 	<% if @remaining > 0.25 * @budget.amount %>
 		<p>You have great decent control! But try to spend more money </p>
